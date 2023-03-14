@@ -12,7 +12,7 @@ git clone https://github.com/RezaPN/rowListExample.git
 
 cd your-repository
 
-npm install
+yarn install
 
 
 ## Usage
@@ -22,7 +22,7 @@ To run the application, use the following command:
 npm start
 
 
-This will start the Metro Bundler. You can then use the Expo app on your iOS or Android device to scan the QR code and run the app.
+This will start the Metro Bundler. You can then use the "yarn run android" and run the app.
 
 ## Optimization Techniques
 
