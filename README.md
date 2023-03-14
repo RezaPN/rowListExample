@@ -1,5 +1,7 @@
 # 2 Row List Example
 
+![Example GIF](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGNjMDlmN2YwYzI3MWEzMDAxOGE0NjVlNzA1OTVlMTM2Zjg2ZWQyOSZjdD1n/mgO0t1p3K4iFYKxFkN/giphy.gif)
+
 This project is an example of how to create a 2 row list like Tokopedia and Shopee using the `FlatList` component in React Native. The project also demonstrates optimization techniques such as using `PureComponent`, `useMemo()`, and `useCallback()`.
 
 ## Getting Started
