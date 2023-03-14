@@ -13,8 +13,8 @@ export default styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 10,
     marginHorizontal: 10,
-    width: cardWidth, // 40% of screen width
-    height: heightWidth * 0.29,
+    width: cardWidth, 
+    height: cardWidth*1.25, //check in iOS & Android
     backgroundColor: 'white',
     justifyContent: 'flex-start',
   },
