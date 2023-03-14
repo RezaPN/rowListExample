@@ -5,56 +5,21 @@
  * @format
  */
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef, useCallback, useMemo} from 'react';
 import {
+  FlatList,
   SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+  ActivityIndicator,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {filterFetch} from '../../utils/apiFetch';
-
 import {useSelector, useDispatch} from 'react-redux';
 import {getListPlaceholder} from '../../actions';
-
-function Section(props) {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {props.title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {props.children}
-      </Text>
-    </View>
-  );
-}
+import styles from './styles';
+import Section from './section';
 
 function Home({navigation}) {
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(0);
+
   const {
     getListPlaceholderResult,
     getListPlaceholderLoading,
@@ -64,79 +29,76 @@ function Home({navigation}) {
     getListPlaceholderLoading: state.getListPlaceholder.loading,
     getListPlaceholderError: state.getListPlaceholder.error,
   }));
+  const prevGetListPlaceholderResult = useRef();
 
   const dispatch = useDispatch();
 
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   useEffect(() => {
-    fetchCategories();
+    loadData(0);
   }, []);
 
   useEffect(() => {
-    console.log(getListPlaceholderResult);
-  }),
-    [getListPlaceholderResult];
+    if (
+      getListPlaceholderResult &&
+      getListPlaceholderResult !== prevGetListPlaceholderResult.current
+    ) {
+      if (data && data.length !== 0) {
+        setData([...data, ...getListPlaceholderResult]);
+      } else {
+        setData(getListPlaceholderResult);
+      }
+    }
+    prevGetListPlaceholderResult.current = getListPlaceholderResult;
+  }, [getListPlaceholderResult, data]);
 
-  const fetchCategories = async () => {
-    dispatch(getListPlaceholder());
+  const loadData = async pageModified => {
+    dispatch(getListPlaceholder({page: pageModified}));
   };
+  const handleEndReached = useCallback(() => {
+    loadData(page + 10);
+    setPage(page + 10);
+  }, [loadData, page, setPage]);
+
+  const renderFooter = useMemo(() => {
+    return getListPlaceholderLoading ? (
+      <ActivityIndicator
+        size="large"
+        style={styles.activityIndicator}
+      />
+    ) : null;
+  }, [getListPlaceholderLoading]);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.backgroundStyle}>
+      {data && data.length !== 0 && (
+        <FlatList
+          data={data}
+          extraData={data}
+          renderItem={({item, index}) => {
+            return (
+              <Section
+                navigation={() => {
+                  navigation.navigate('Description', {data: item});
+                }}
+                key={item.id}
+                data={item}
+              />
+            );
+          }}
+          keyExtractor={item => item.id}
+          onEndReached={() => handleEndReached()}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={renderFooter}
+          contentContainerStyle={{alignSelf: 'center'}}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        />
+      )}
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+
 
 export default Home;

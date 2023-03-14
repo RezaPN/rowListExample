@@ -10,7 +10,7 @@ import {
 function* getListPlaceholderSaga(action) {
   try {
     const result = yield filterFetch({
-      url: 'https://jsonplaceholder.typicode.com/photos',
+      url: `https://jsonplaceholder.typicode.com/photos?_start=${action.page}&_limit=10`,
       method: 'get',
     });
     yield put({
