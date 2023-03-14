@@ -6,7 +6,7 @@ This project is an example of how to create a 2 row list like Tokopedia and Shop
 
 To get started, clone the repository and run `npm install`.
 
-git clone https://github.com/your-username/your-repository.git
+git clone https://github.com/RezaPN/rowListExample.git
 cd your-repository
 npm install
 
