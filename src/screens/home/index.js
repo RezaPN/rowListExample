@@ -10,6 +10,7 @@ import {
   FlatList,
   SafeAreaView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getListPlaceholder} from '../../actions';
@@ -49,7 +50,16 @@ function Home({navigation}) {
       }
     }
     prevGetListPlaceholderResult.current = getListPlaceholderResult;
-  }, [getListPlaceholderResult, data]);
+
+    if (getListPlaceholderError) {
+      Alert.alert(
+        'Error',
+        getListPlaceholderError.message,
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false},
+      );
+    }
+  }, [getListPlaceholderResult, data, getListPlaceholderError]);
 
   const loadData = async pageModified => {
     dispatch(getListPlaceholder({page: pageModified}));
