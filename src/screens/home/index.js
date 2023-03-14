@@ -25,6 +25,9 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {filterFetch} from '../../utils/apiFetch';
 
+import {useSelector, useDispatch} from 'react-redux';
+import {getListPlaceholder} from '../../actions';
+
 function Section(props) {
   const isDarkMode = useColorScheme() === 'dark';
   return (
@@ -52,6 +55,18 @@ function Section(props) {
 }
 
 function Home({navigation}) {
+  const {
+    getListPlaceholderResult,
+    getListPlaceholderLoading,
+    getListPlaceholderError,
+  } = useSelector(state => ({
+    getListPlaceholderResult: state.getListPlaceholder.result,
+    getListPlaceholderLoading: state.getListPlaceholder.loading,
+    getListPlaceholderError: state.getListPlaceholder.error,
+  }));
+
+  const dispatch = useDispatch();
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -62,8 +77,13 @@ function Home({navigation}) {
     fetchCategories();
   }, []);
 
-  const fetchCategories = async () => {
+  useEffect(() => {
+    console.log(getListPlaceholderResult);
+  }),
+    [getListPlaceholderResult];
 
+  const fetchCategories = async () => {
+    dispatch(getListPlaceholder());
   };
 
   return (

@@ -5,7 +5,11 @@ export async function filterFetch(requestConfig) {
     const response = await axios(requestConfig);
     return response.data;
   } catch (error) {
-    return error.response.data;
+    if (error.response.data) {
+      throw new Error(error.response.data);
+    } else {
+      throw new Error(error);
+    }
   }
 
   // if (
