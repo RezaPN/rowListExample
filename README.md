@@ -6,23 +6,23 @@ This project is an example of how to create a 2 row list like Tokopedia and Shop
 
 ## Getting Started
 
-To get started, clone the repository and run `npm install`
+To get started, clone the repository and run `yarn install`
 
 git clone https://github.com/RezaPN/rowListExample.git
 
 cd your-repository
 
-yarn install
+`yarn install`
 
 
 ## Usage
 
 To run the application, use the following command:
 
-npm start
+`yarn start`
 
 
-This will start the Metro Bundler. You can then use the "yarn run android" and run the app.
+This will start the Metro Bundler. You can then use the `yarn run android` and run the app.
 
 ## Optimization Techniques
 
