@@ -30,9 +30,9 @@ The project demonstrates the use of the following optimization techniques:
 
 - **`PureComponent`**: This is used in the `Section` component to prevent unnecessary re-renders when the props have not changed.
 
-- **`useMemo()`**: This is used to memoize the `allCapitalInWord()` function in the `Section` component to prevent unnecessary re-computation.
+- **`useMemo()`**: This is used to memoize the `renderFooter()` function in the `Home` to prevent unnecessary re-computation.
 
-- **`useCallback()`**: This is used to memoize the `handleEndReached()` function in the `Home` component to prevent unnecessary re-creation of the function on each render.
+- **`useCallback()`**: This is used to memoize the `handleEndReached()` function in the `Home` to prevent unnecessary re-creation of the function on each render.
 
 ## License
 
